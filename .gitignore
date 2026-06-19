@@ -1,0 +1,14 @@
+# Compiled class file
+*.class
+
+# Log file
+*.log
+*.lock
+
+# Package Files #
+*.jar
+*.zip
+
+/.gradle/*
+/build/*
+/.idea/*
