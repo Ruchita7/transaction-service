@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-init-sql
+  namespace: banking
+data:
+  init.sql: |
+    CREATE SCHEMA IF NOT EXISTS user_schema;
+    CREATE SCHEMA IF NOT EXISTS transaction_schema;
+    GRANT ALL PRIVILEGES ON SCHEMA user_schema TO postgres;
+    GRANT ALL PRIVILEGES ON SCHEMA transaction_schema TO postgres;
