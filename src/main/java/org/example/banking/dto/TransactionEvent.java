@@ -1,17 +1,19 @@
-package com.example.banking.dto;
+package org.example.banking.dto;
+
 
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @Builder
-public class TransactionDTO {
+@NoArgsConstructor
+@AllArgsConstructor
+
+
+public class TransactionEvent {
 
     private UUID transactionId;
     private String transferFromAccountNumber;
@@ -20,7 +22,5 @@ public class TransactionDTO {
     private BigDecimal amount;
     private String description;
     private TransactionStatus status;
-    private LocalDateTime createdOn;
-    private LocalDateTime updatedOn;
     private String referenceId;
 }

@@ -1,4 +1,4 @@
-package com.example.banking.dto;
+package org.example.banking.dto;
 
 public enum TransactionType {
 

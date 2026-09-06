@@ -5,6 +5,9 @@ metadata:
   namespace: banking
 spec:
   replicas: 1
+  revisionHistoryLimit: 0
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: zookeeper
@@ -21,6 +24,17 @@ spec:
           env:
             - name: ZOOKEEPER_CLIENT_PORT
               value: "2181"
+            - name: ZOOKEEPER_TICK_TIME
+              value: "2000"
+            - name: ZOOKEEPER_HEAP_OPTS
+              value: "-Xmx128m -Xms64m"
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "192Mi"
+              cpu: "200m"
           readinessProbe:
             tcpSocket:
               port: 2181
@@ -46,6 +60,9 @@ metadata:
   namespace: banking
 spec:
   replicas: 1
+  revisionHistoryLimit: 0
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: kafka
@@ -68,20 +85,39 @@ spec:
               value: "1"
             - name: KAFKA_ZOOKEEPER_CONNECT
               value: "zookeeper:2181"
+            - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
+              value: "PLAINTEXT:PLAINTEXT"
+            - name: KAFKA_LISTENERS
+              value: "PLAINTEXT://0.0.0.0:9092"
             - name: KAFKA_ADVERTISED_LISTENERS
-              value: "PLAINTEXT://kafka:9092"
+              value: "PLAINTEXT://kafka-broker:9092"
+            - name: KAFKA_INTER_BROKER_LISTENER_NAME
+              value: "PLAINTEXT"
             - name: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
               value: "1"
+            - name: KAFKA_AUTO_CREATE_TOPICS_ENABLE
+              value: "true"
+            - name: KAFKA_HEAP_OPTS
+              value: "-Xmx256m -Xms128m"
+            - name: KAFKA_JVM_PERFORMANCE_OPTS
+              value: "-XX:+UseG1GC -XX:MaxGCPauseMillis=20"
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "200m"
+            limits:
+              memory: "384Mi"
+              cpu: "400m"
           readinessProbe:
             tcpSocket:
               port: 9092
-            initialDelaySeconds: 20
+            initialDelaySeconds: 30
             periodSeconds: 10
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: kafka
+  name: kafka-broker
   namespace: banking
 spec:
   selector:

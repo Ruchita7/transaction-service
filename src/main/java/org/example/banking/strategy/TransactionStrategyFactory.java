@@ -1,8 +1,7 @@
-package com.example.banking.strategy;
+package org.example.banking.strategy;
 
-import com.example.banking.dto.TransactionType;
+import org.example.banking.dto.TransactionType;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @AllArgsConstructor

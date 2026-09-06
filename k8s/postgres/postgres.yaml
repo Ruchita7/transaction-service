@@ -17,6 +17,9 @@ metadata:
   namespace: banking
 spec:
   replicas: 1
+  revisionHistoryLimit: 0
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: postgres
@@ -46,6 +49,13 @@ spec:
                 secretKeyRef:
                   name: postgres-secret
                   key: POSTGRES_PASSWORD
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "200m"
           volumeMounts:
             - name: postgres-storage
               mountPath: /var/lib/postgresql/data
@@ -53,8 +63,8 @@ spec:
               mountPath: /docker-entrypoint-initdb.d/init.sql
               subPath: init.sql
           readinessProbe:
-            exec:
-              command: ["pg_isready", "-U", "postgres", "-d", "banking_db"]
+            tcpSocket:
+              port: 5432
             initialDelaySeconds: 5
             periodSeconds: 5
       volumes:

@@ -1,6 +1,6 @@
-package com.example.banking.strategy;
+package org.example.banking.strategy;
 
-import com.example.banking.dto.TransactionDTO;
+import org.example.banking.dto.TransactionDTO;
 
 public interface TransactionStrategy {
 

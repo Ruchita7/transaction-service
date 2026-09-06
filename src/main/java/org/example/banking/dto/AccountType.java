@@ -1,4 +1,4 @@
-package com.example.banking.dto;
+package org.example.banking.dto;
 
 /**
  * Enum representing the type of bank account.

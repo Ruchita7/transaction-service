@@ -1,7 +1,7 @@
-package com.example.banking.entity;
+package org.example.banking.entity;
 
-import com.example.banking.dto.TransactionStatus;
-import com.example.banking.dto.TransactionType;
+import org.example.banking.dto.TransactionStatus;
+import org.example.banking.dto.TransactionType;
 import jakarta.persistence.*;
 import lombok.*;
 

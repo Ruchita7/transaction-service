@@ -1,6 +1,6 @@
-package com.example.banking.service;
+package org.example.banking.service;
 
-import com.example.banking.dto.TransactionDTO;
+import org.example.banking.dto.TransactionDTO;
 
 import java.util.List;
 import java.util.UUID;

@@ -1,14 +1,13 @@
-package com.example.banking.controller;
+package org.example.banking.controller;
 
-import com.example.banking.dto.AmountRequest;
-import com.example.banking.dto.TransactionDTO;
-import com.example.banking.service.TransactionService;
+import org.example.banking.dto.TransactionDTO;
+import org.example.banking.service.TransactionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.UUID;
 

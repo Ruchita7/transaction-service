@@ -1,16 +1,16 @@
-package com.example.banking.service;
+package org.example.banking.service;
 
-import com.example.banking.dto.TransactionDTO;
-import com.example.banking.entity.Transaction;
-import com.example.banking.repository.TransactionRepository;
-import com.example.banking.strategy.TransactionStrategyFactory;
+import jakarta.persistence.EntityNotFoundException;
+import org.example.banking.dto.TransactionDTO;
+import org.example.banking.entity.Transaction;
+import org.example.banking.repository.TransactionRepository;
+import org.example.banking.strategy.TransactionStrategyFactory;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -25,7 +25,8 @@ public class TransactionService_Impl implements TransactionService {
 
     @Override
     public TransactionDTO findById(UUID transactionId) {
-        Optional<Transaction> transaction = transactionRepository.findById(transactionId);
+        Transaction transaction = transactionRepository.findById(transactionId)
+                .orElseThrow(() -> new EntityNotFoundException("Transaction not found: " + transactionId));
         return mapper.map(transaction, TransactionDTO.class);
     }
 
