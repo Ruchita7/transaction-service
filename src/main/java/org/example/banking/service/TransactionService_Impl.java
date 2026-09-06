@@ -9,10 +9,9 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @AllArgsConstructor
@@ -32,12 +31,11 @@ public class TransactionService_Impl implements TransactionService {
 
     @Override
     public List<TransactionDTO> getTransactionHistory(String accountNumber) {
-        List<Transaction> transactionTransferFrom = transactionRepository.findByTransferFromAccountNumber(accountNumber);
-        List<Transaction> transactionTransferTo = transactionRepository.findByTransferToAccountNumber(accountNumber);
-        List<Transaction> allTransactions = new ArrayList<>(transactionTransferTo);
-        allTransactions.addAll(transactionTransferFrom);
-        return allTransactions.stream().map(transaction -> mapper.map(transaction,TransactionDTO.class))
-                .collect(Collectors.toList());
+        return Stream.concat(
+                        transactionRepository.findByTransferFromAccountNumber(accountNumber).stream(),
+                        transactionRepository.findByTransferToAccountNumber(accountNumber).stream())
+                .map(t -> mapper.map(t, TransactionDTO.class))
+                .toList();
     }
 
     @Override

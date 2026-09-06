@@ -4,7 +4,8 @@ public enum TransactionStatus {
 
     PENDING("Pending"),
     COMPLETED("Completed"),
-    FAILED("Failed");
+    FAILED("Failed"),
+    NEEDS_RECONCILIATION("Needs reconciliation");
 
     private String status;
 

@@ -51,8 +51,10 @@ public class WithdrawStrategy implements TransactionStrategy {
         transactionRepository.save(transaction);
 
         try {
-            accountServiceClient.withdrawAccount(transactionDTO.getTransferFromAccountNumber(),
-                    new AmountRequest(transactionDTO.getAmount()));
+            accountServiceClient.withdrawAccount(
+                    transactionDTO.getTransferFromAccountNumber(),
+                    new AmountRequest(transactionDTO.getAmount()),
+                    transaction.getReferenceId() + "-withdraw");
 
             transaction.setStatus(TransactionStatus.COMPLETED);
             Transaction savedTransaction = transactionRepository.save(transaction);
@@ -62,19 +64,19 @@ public class WithdrawStrategy implements TransactionStrategy {
         } catch (EntityNotFoundException | IllegalStateException e) {
             // expected failure (account vanished / insufficient balance) — record it,
             // then let it propagate so it maps to 404 / 409, not 502.
-            recordFailure(transaction, transactionDTO);
+            recordFailure(transaction, transactionDTO, TransactionStatus.FAILED);
             throw e;
         } catch (Exception e) {
-            recordFailure(transaction, transactionDTO);
+            recordFailure(transaction, transactionDTO, TransactionStatus.FAILED);
             throw new TransactionFailedException(
                     "Withdraw failed for account " + transactionDTO.getTransferFromAccountNumber(), e);
         }
     }
 
-    private void recordFailure(Transaction transaction, TransactionDTO transactionDTO) {
-        transaction.setStatus(TransactionStatus.FAILED);
+    private void recordFailure(Transaction transaction, TransactionDTO transactionDTO, TransactionStatus status) {
+        transaction.setStatus(status);
         transactionRepository.save(transaction);
-        emitEvent(transaction, transactionDTO, TransactionStatus.FAILED);
+        emitEvent(transaction, transactionDTO, status);
     }
 
     private void emitEvent(Transaction transaction, TransactionDTO transactionDTO, TransactionStatus status) {
